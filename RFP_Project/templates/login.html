@@ -19,15 +19,14 @@
                         <div class="bg-soft-primary">
                             <div class="text-primary p-4">
                                 <h5 class="text-primary">Welcome to RFP System!</h5>
-                                <p>Register as {% if is_vendor %}Vendor{% else %}User{% endif %}</p>
                             </div>
                         </div>
                         <div class="card-body pt-0">
                             <div class="p-4">
+                                {% }
                                 <form method="post" class="form-horizontal">
                                     {% csrf_token %}
                                     <div class="row">
-                                        {{ form.non_field_errors }}
                                         {% for field in form %}
                                             <div class="col-md-12 col-lg-6 col-xl-6">
                                                 <div class="form-group">
@@ -39,23 +38,8 @@
                                                 </div>
                                             </div>
                                         {% endfor %}
-
-                                        {% if is_vendor %}
-                                            {% for field in vendor_form %}
-                                                <div class="col-md-12 col-lg-6 col-xl-6">
-                                                    <div class="form-group">
-                                                        <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}*{% endif %}</label>
-                                                        {{ field }}
-                                                        {% if field.errors %}
-                                                            <div class="text-danger">{{ field.errors|striptags }}</div>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        {% endif %}
-
                                         <div class="p-2 mt-3 col-md-12">
-                                            <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">Register</button>
+                                            <button class="btn btn-primary btn-block waves-effect waves-light" type="submit" >Login</button>
                                         </div>
                                     </div>
                                 </form>

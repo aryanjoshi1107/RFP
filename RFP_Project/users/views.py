@@ -1,7 +1,8 @@
 # views.py
 from django.views import View
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm, VendorDetailsForm
+from django.contrib.auth import authenticate, login
+from .forms import UserRegisterForm, VendorDetailsForm,LoginForm
 from users.models import Users, VendorDetails
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
@@ -54,23 +55,32 @@ class Register(FormView):
         return self.render_to_response(context)
     
 
-class MyLoginView(LoginView):
-    """
-    """
-    template_name ='login.html'
-    redirect_authenticated_user = True
-    
-    def get_success_url(self):
-        return reverse_lazy('Dashboard') 
-    
-    def form_invalid(self, form):
-        messages.error(self.request,'Invalid email or password')
-        return self.render_to_response(self.get_context_data(form=form))
-    
+class MyLoginView(View):
+    template_name = 'login.html'
+
+    def get(self, request):
+        return render(request, self.template_name, {'form': LoginForm()})
+
+    def post(self, request):
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = authenticate(request, email=email, password=password)
+            if user:
+                login(request, user)
+                print("Logged in:", user.email)
+                request.session['role'] = user.role  # storing role in session to load content dynamically in dashboard
+                return redirect('Dashboard')  
+            else:
+                form.add_error(None, "Invalid email or password")
+
+        return render(request, self.template_name, {'form': form})
 
    
-class Home(LoginRequiredMixin, TemplateView):
+class Dashboard(LoginRequiredMixin, TemplateView):
     template_name = "dashboard.html"
+    
 
     
     

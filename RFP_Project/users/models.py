@@ -31,7 +31,6 @@ class Users(AbstractBaseUser, PermissionsMixin):
     password = models.CharField(max_length=50,null= False)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
     objects = UserManager()
     USERNAME_FIELD = 'email'
     def __str__(self):
