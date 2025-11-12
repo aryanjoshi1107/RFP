@@ -1,0 +1,73 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Login | RFP System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}">
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/css/app.min.css' %}" rel="stylesheet" />
+</head>
+<body>
+    <div class="account-pages my-5 pt-sm-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-8">
+                    <div class="card overflow-hidden">
+                        <div class="bg-soft-primary">
+                            <div class="text-primary p-4">
+                                <h5 class="text-primary">Welcome to RFP System!</h5>
+                                <p>Register as {% if is_vendor %}Vendor{% else %}Admin{% endif %}</p>
+                            </div>
+                        </div>
+                        <div class="card-body pt-0">
+                            <div class="p-4">
+                                <form method="post" class="form-horizontal">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        {{ form.non_field_errors }}
+                                        {% for field in form %}
+                                            <div class="col-md-12 col-lg-6 col-xl-6">
+                                                <div class="form-group">
+                                                    <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}*{% endif %}</label>
+                                                    {{ field}}
+                                                    {% if field.errors %}
+                                                        <div class="text-danger">{{ field.errors|striptags }}</div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                        {% if is_vendor %}
+                                            {% for field in vendor_form %}
+                                                <div class="col-md-12 col-lg-6 col-xl-6">
+                                                    <div class="form-group">
+                                                        <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}*{% endif %}</label>
+                                                        {{ field }}
+                                                        {% if field.errors %}
+                                                            <div class="text-danger">{{ field.errors|striptags }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        <div class="p-2 mt-3 col-md-12">
+                                            <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">Register</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-5 text-center">
+                        <p>&copy; RFP System</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
