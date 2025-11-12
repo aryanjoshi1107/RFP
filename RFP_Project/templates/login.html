@@ -1,4 +1,6 @@
 {% load static %}
+{% load widget_tweaks %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,10 +29,10 @@
                                     {% csrf_token %}
                                     <div class="row">
                                         {% for field in form %}
-                                            <div class="col-md-12 col-lg-6 col-xl-6">
+                                            <div class="col-12">
                                                 <div class="form-group">
                                                     <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}*{% endif %}</label>
-                                                    {{ field }}
+                                                    {{ field|add_class:'form-control' }}
                                                     {% if field.errors %}
                                                         <div class="text-danger">{{ field.errors|striptags }}</div>
                                                     {% endif %}

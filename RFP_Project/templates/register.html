@@ -1,4 +1,5 @@
 {% load static %}
+{% load widget_tweaks %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -19,46 +20,150 @@
                         <div class="bg-soft-primary">
                             <div class="text-primary p-4">
                                 <h5 class="text-primary">Welcome to RFP System!</h5>
-                                <p>Register as {% if is_vendor %}Vendor{% else %}Admin{% endif %}</p>
+                                <p>Register as {% if is_vendor %}Admin{% else %}Vendor{% endif %}</p>
                             </div>
                         </div>
                         <div class="card-body pt-0">
                             <div class="p-4">
-                                <form method="post" class="form-horizontal">
-                                    {% csrf_token %}
-                                    <div class="row">
-                                        {{ form.non_field_errors }}
-                                        {% for field in form %}
-                                            <div class="col-md-12 col-lg-6 col-xl-6">
-                                                <div class="form-group">
-                                                    <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}*{% endif %}</label>
-                                                    {{ field}}
-                                                    {% if field.errors %}
-                                                        <div class="text-danger">{{ field.errors|striptags }}</div>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        {% endfor %}
+                                <form method="post" action="" class="form-horizontal">
+                            {% csrf_token %}
+                            <div class="container">
+                                {{ form.non_field_errors }}
+                                <div class="row gx-3">
 
-                                        {% if is_vendor %}
-                                            {% for field in vendor_form %}
-                                                <div class="col-md-12 col-lg-6 col-xl-6">
-                                                    <div class="form-group">
-                                                        <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}*{% endif %}</label>
-                                                        {{ field }}
-                                                        {% if field.errors %}
-                                                            <div class="text-danger">{{ field.errors|striptags }}</div>
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                        {% endif %}
-
-                                        <div class="p-2 mt-3 col-md-12">
-                                            <button class="btn btn-primary btn-block waves-effect waves-light" type="submit">Register</button>
-                                        </div>
+                                <!-- First Name -->
+                                <div class="col-12 col-lg-6 mb-3">
+                                    <div class="form-group">
+                                    <label for="{{ form.first_name.id_for_label }}" class="form-label">First Name <span class="text-danger">*</span></label>
+                                    {{ form.first_name|add_class:"form-control" }}
+                                    {% if form.first_name.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.first_name.errors|striptags }}</div>
+                                    {% endif %}
                                     </div>
-                                </form>
+                                </div>
+
+                                <!-- Last Name -->
+                                <div class="col-12 col-lg-6 mb-3">
+                                    <div class="form-group">
+                                    <label for="{{ form.last_name.id_for_label }}" class="form-label">Last Name <span class="text-danger">*</span></label>
+                                    {{ form.last_name|add_class:"form-control" }}
+                                    {% if form.last_name.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.last_name.errors|striptags }}</div>
+                                    {% endif %}
+                                    </div>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="col-12 col-lg-6 mb-3">
+                                    <div class="form-group">
+                                    <label for="{{ form.email.id_for_label }}" class="form-label">Email <span class="text-danger">*</span></label>
+                                    {{ form.email|add_class:"form-control" }}
+                                    {% if form.email.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.email.errors|striptags }}</div>
+                                    {% endif %}
+                                    </div>
+                                </div>
+
+                                <!-- Password -->
+                                <div class="col-12 col-lg-6 mb-3">
+                                    <div class="form-group">
+                                    <label for="{{ form.password.id_for_label }}" class="form-label">Password <span class="text-danger">*</span></label>
+                                    {{ form.password|add_class:"form-control" }}
+                                    {% if form.password.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.password.errors|striptags }}</div>
+                                    {% endif %}
+                                    </div>
+                                </div>
+
+                                <!-- Confirm Password -->
+                                <div class="col-12 col-lg-6 mb-3">
+                                    <div class="form-group">
+                                    <label for="{{ form.confirm_password.id_for_label }}" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                                    {{ form.confirm_password|add_class:"form-control" }}
+                                    {% if form.confirm_password.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.confirm_password.errors|striptags }}</div>
+                                    {% endif %}
+                                    </div>
+                                </div>
+
+                                {% if is_vendor %}
+                                    {{ vendor_form.non_field_errors }}
+
+                                    <!-- Revenue -->
+                                    <div class="col-12 col-lg-6 mb-3">
+                                    <div class="form-group">
+                                        <label for="{{ vendor_form.revenue.id_for_label }}" class="form-label">Revenue (Last 3 Years in Lacs) <span class="text-danger">*</span></label>
+                                        {{ vendor_form.revenue|add_class:"form-control" }}
+                                        {% if vendor_form.revenue.errors %}
+                                        <div class="invalid-feedback d-block">{{ vendor_form.revenue.errors|striptags }}</div>
+                                        {% endif %}
+                                    </div>
+                                    </div>
+
+                                    <!-- Employee Count -->
+                                    <div class="col-12 col-lg-6 mb-3">
+                                    <div class="form-group">
+                                        <label for="{{ vendor_form.employee_count.id_for_label }}" class="form-label">No. of Employees <span class="text-danger">*</span></label>
+                                        {{ vendor_form.employee_count|add_class:"form-control" }}
+                                        {% if vendor_form.employee_count.errors %}
+                                        <div class="invalid-feedback d-block">{{ vendor_form.employee_count.errors|striptags }}</div>
+                                        {% endif %}
+                                    </div>
+                                    </div>
+
+                                    <!-- PAN Number -->
+                                    <div class="col-12 col-lg-6 mb-3">
+                                    <div class="form-group">
+                                        <label for="{{ vendor_form.pan_number.id_for_label }}" class="form-label">PAN Number <span class="text-danger">*</span></label>
+                                        {{ vendor_form.pan_number|add_class:"form-control" }}
+                                        {% if vendor_form.pan_number.errors %}
+                                        <div class="invalid-feedback d-block">{{ vendor_form.pan_number.errors|striptags }}</div>
+                                        {% endif %}
+                                    </div>
+                                    </div>
+
+                                    <!-- GST Number -->
+                                    <div class="col-12 col-lg-6 mb-3">
+                                    <div class="form-group">
+                                        <label for="{{ vendor_form.gst_number.id_for_label }}" class="form-label">GST Number <span class="text-danger">*</span></label>
+                                        {{ vendor_form.gst_number|add_class:"form-control" }}
+                                        {% if vendor_form.gst_number.errors %}
+                                        <div class="invalid-feedback d-block">{{ vendor_form.gst_number.errors|striptags }}</div>
+                                        {% endif %}
+                                    </div>
+                                    </div>
+
+                                    <!-- Phone Number -->
+                                    <div class="col-12 col-lg-6 mb-3">
+                                    <div class="form-group">
+                                        <label for="{{ vendor_form.phone_number.id_for_label }}" class="form-label">Phone Number <span class="text-danger">*</span></label>
+                                        {{ vendor_form.phone_number|add_class:"form-control" }}
+                                        {% if vendor_form.phone_number.errors %}
+                                        <div class="invalid-feedback d-block">{{ vendor_form.phone_number.errors|striptags }}</div>
+                                        {% endif %}
+                                    </div>
+                                    </div>
+
+                                    <!-- Category -->
+                                    <div class="col-12 col-lg-6 mb-3">
+                                    <div class="form-group">
+                                        <label for="{{ vendor_form.category.id_for_label }}" class="form-label">Category</label>
+                                        {{ vendor_form.category|add_class:"form-control" }}
+                                        {% if vendor_form.category.errors %}
+                                        <div class="invalid-feedback d-block">{{ vendor_form.category.errors|striptags }}</div>
+                                        {% endif %}
+                                    </div>
+                                    </div>
+                                {% endif %}
+
+                                <!-- Submit -->
+                                <div class="col-12 mt-2">
+                                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                                </div>
+
+                                </div>
+                            </div>
+                            </form>
                             </div>
                         </div>
                     </div>
