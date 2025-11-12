@@ -28,7 +28,6 @@ class Users(AbstractBaseUser, PermissionsMixin):
     role = models.CharField(max_length=10, choices=[('admin', 'Admin'), ('vendor', 'Vendor')])
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    password = models.CharField(max_length=50,null= False)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
