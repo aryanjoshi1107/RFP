@@ -18,7 +18,7 @@ from .forms import UserRegisterForm, VendorDetailsForm
 
 class Register(FormView):
     template_name = 'register.html'
-    success_url = 'Login/'
+    success_url = reverse_lazy('Login')
 
     def get_form_class(self):
         return UserRegisterForm
@@ -57,10 +57,8 @@ class Register(FormView):
 
 class MyLoginView(View):
     template_name = 'login.html'
-
     def get(self, request):
         return render(request, self.template_name, {'form': LoginForm()})
-
     def post(self, request):
         form = LoginForm(request.POST)
         if form.is_valid():
