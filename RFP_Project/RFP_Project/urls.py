@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from users.views import MyLoginView
+from category.views import Category
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',MyLoginView.as_view(),name='Login'),
+    path('categories/',include('category.urls')),
     path('user/',include('users.urls')),
 ]

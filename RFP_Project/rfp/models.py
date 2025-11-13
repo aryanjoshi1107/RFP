@@ -1,6 +1,6 @@
 from django.db import models
-from users.models import Users,Category
-
+from users.models import Users
+from category.models import Category
 # # Create your models here.
 # class RFP(models.Model):
 #     item_name=models.CharField()

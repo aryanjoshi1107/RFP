@@ -22,6 +22,17 @@ class VendorDetailsForm(forms.ModelForm):
     class Meta:
         model = VendorDetails
         exclude = ['user']
+    def __init__(self, *args, category_queryset=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # setting queryset provided by the view, or fall back to all (avoids import at module load)
+        if category_queryset is not None:
+            self.fields['category'].queryset = category_queryset
+        else:
+            # doing a local import to avoid circular import at module import time
+            from django.apps import apps
+            Category = apps.get_model('category', 'Category')
+            self.fields['category'].queryset = Category.objects.all()
         
         
 class LoginForm(forms.Form):

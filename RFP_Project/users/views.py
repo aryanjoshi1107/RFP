@@ -5,10 +5,9 @@ from django.contrib.auth import authenticate, login
 from .forms import UserRegisterForm, VendorDetailsForm,LoginForm
 from users.models import Users, VendorDetails
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import TemplateView
-from django.contrib.auth.views import LoginView
+from django.views.generic import TemplateView,ListView
 from django.urls import reverse_lazy
-from django.contrib import messages
+from django.apps import apps
 # views.py
 from django.views.generic import FormView
 from .forms import UserRegisterForm, VendorDetailsForm
@@ -19,7 +18,7 @@ from .forms import UserRegisterForm, VendorDetailsForm
 class Register(FormView):
     template_name = 'register.html'
     success_url = reverse_lazy('Login')
-
+    
     def get_form_class(self):
         return UserRegisterForm
 
@@ -28,13 +27,15 @@ class Register(FormView):
         is_vendor = self.request.resolver_match.url_name == 'vendor-register'
         context['is_vendor'] = is_vendor
         if is_vendor:
-            context['vendor_form'] = VendorDetailsForm()
+            Category = apps.get_model('category', 'Category')
+            context['vendor_form'] = VendorDetailsForm(category_queryset=Category.objects.filter(status='active'))
         return context
 
     def post(self, request, *args, **kwargs):
         user_form = UserRegisterForm(request.POST)
         is_vendor = request.resolver_match.url_name == 'vendor-register'
-        vendor_form = VendorDetailsForm(request.POST) if is_vendor else None
+        Category = apps.get_model('category', 'Category') if is_vendor else None
+        vendor_form = VendorDetailsForm(request.POST,category_queryset=Category.objects.filter(status='active')) if is_vendor else None
 
         if user_form.is_valid() and (not is_vendor or vendor_form.is_valid()):
             user = user_form.save(commit=False)
@@ -81,4 +82,5 @@ class Dashboard(LoginRequiredMixin, TemplateView):
     
 
     
+ 
     

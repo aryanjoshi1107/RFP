@@ -1,0 +1,50 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+
+<div class="col-lg-12 ">
+    <div class="card container">
+        <div class="card-body row ">
+            <div class="col-12 d-flex justify-content-between">
+                <span>Categories</span>
+                <a class="btn btn-primary mb-2" href="/categories/add"> +Add Category</a>
+            </div>
+
+            <div class="col-12">
+                <Table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th scope="col">S.NO</th>
+                            <th scope="col">Category Name</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in categories %}
+                        <tr>
+                            <td>{{category.id}}</td>
+                            <td>{{ category.name }}</td>
+                            <td>{{ category.status }}</td>
+                            <td>
+                                <form action="{% url 'ToggleStatus' category.id %}" method="post"
+                                    style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                    <button type="submit"
+                                        class="btn btn-sm {% if category.status == 'active' %}btn-warning{% else %}btn-success{% endif %}">
+                                        {% if category.status == 'active' %}Deactivate{% else %}Activate{% endif %}
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </Table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
